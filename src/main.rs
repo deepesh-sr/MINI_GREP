@@ -1,4 +1,4 @@
-use std::{env, error::Error, fs, process};
+use std::{env, process};
 use minigrep::Config;
 fn main() {
     //iterators
