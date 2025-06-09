@@ -33,10 +33,10 @@ cargo build
 - [x] Config struct for managing arguments
 - [x] File reading functionality
 - [x] Error handling for invalid arguments and file operations
-
+- [x] Extract search logic into separate function
+- [x] Return matching lines instead of entire file content
+      
 ### 🚧 TODO (Following Rust Book Chapter 12)
-- [ ] Extract search logic into separate function
-- [ ] Return matching lines instead of entire file content
 - [ ] Add case-insensitive search option
 - [ ] Environment variable support (IGNORE_CASE)
 - [ ] Write output to stderr for errors
