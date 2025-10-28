@@ -1,4 +1,4 @@
-use std::{env, fs,process};
+use std::{env, error::Error, fs, process};
 
 //if you program arg could contain invalid unicode, use std::env::arg_os
 // it return OsStrings instead of string
@@ -19,12 +19,27 @@ fn main (){
         process::exit(1);
     });
 
-    let file_content = fs::read_to_string(config.file_path).expect("Should have been able to read to file");
-    println!("Contents of file :\n{}",file_content)
+
+    // modularised it in run function
+    // added error handeling, as the way run is written , rust compiler thinks error handeling function.
+
+   if let Err(e)= run(config){
+    println!("Application error: {e}");
+    process::exit(1);
+   }
+
+    // let file_content = fs::read_to_string(config.file_path).expect("Should have been able to read to file");
+    // println!("Contents of file :\n{}",file_content)
 
     // we have to put our logic out of the main file, for now we are creating just an function outside for config. 
 }
+// implementing Box<dyn Error>, that will make the return type implement the dyanamic error trait. 
 
+pub fn run(config : Config) -> Result<(),Box<dyn Error>>{
+    let file_content = fs::read_to_string(config.file_path).expect("Should have been able to read to file");
+    println!("Contents of file :\n{}",file_content);
+    Ok(())
+}
 //creating a struct Config , so that the maintainer will get a good idea of data args.
 pub struct Config{
     pub word : String,
