@@ -1,4 +1,5 @@
 use std::{env, error::Error, fs, process};
+use minigrep::search;
 
 //if you program arg could contain invalid unicode, use std::env::arg_os
 // it return OsStrings instead of string
@@ -21,7 +22,7 @@ fn main (){
 
 
     // modularised it in run function
-    // added error handeling, as the way run is written , rust compiler thinks error handeling function.
+    // added error handeling, as the way run is written , rust compiler thinks error handeling
 
    if let Err(e)= run(config){
     println!("Application error: {e}");
@@ -38,6 +39,10 @@ fn main (){
 pub fn run(config : Config) -> Result<(),Box<dyn Error>>{
     let file_content = fs::read_to_string(config.file_path).expect("Should have been able to read to file");
     println!("Contents of file :\n{}",file_content);
+
+    for line in search(&config.word, &file_content){
+        println!("{line}");
+    }
     Ok(())
 }
 //creating a struct Config , so that the maintainer will get a good idea of data args.
