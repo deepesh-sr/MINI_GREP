@@ -8,7 +8,10 @@ fn main (){
     // let file_path = &args[2];
 
     //returning a config struct Config { word , filepath}
-    let config = parse_config(&args);
+    // let config = parse_config(&args);
+
+    //calling the same function with Config::new  ,as we implemented
+    let config = Config::new(&args);
 
     let file_content = fs::read_to_string(config.file_path).expect("Should have been able to read to file");
     println!("Contents of file : {}",file_content)
@@ -17,7 +20,7 @@ fn main (){
 }
 
 //creating a struct Config , so that the maintainer will get a good idea of data args.
-struct Config{
+pub struct Config{
     pub word : String,
     pub file_path : String
 }
@@ -33,10 +36,26 @@ struct Config{
 
 
 //Returning in form of Struct
-pub fn parse_config(args : &[String])-> Config{
+
+// pub fn parse_config(args : &[String])-> Config{
+
+
+//     let word_to_be_searched_2 = args[1].clone();
+//     let file_path_2 = args[2].clone();
+
+//     Config { word: word_to_be_searched_2, file_path: file_path_2 }
+// }
+
+// as parse_config in creating an instance of the Config, we gonna imp the same function for config as new.
+// also in future we can call Config::new to create an instance.
+
+impl Config {
+
+    pub fn new(args : &[String])-> Config{
 
     let word_to_be_searched_2 = args[1].clone();
     let file_path_2 = args[2].clone();
 
     Config { word: word_to_be_searched_2, file_path: file_path_2 }
+}
 }
