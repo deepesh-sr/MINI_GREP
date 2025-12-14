@@ -15,7 +15,7 @@ fn main() {
     // let config = Config::new(&args);
 
     // using Config::build
-    let config = Config::build(&args).unwrap_or_else(|err| {
+    let config = Config::build(env::args()).unwrap_or_else(|err| {
         // println!("Problem parsing arguments: {err}");
         eprintln!("Problem parsing arguments: {err}");
         process::exit(1);
@@ -91,13 +91,23 @@ pub struct Config {
 impl Config {
     // pub fn new(args : &[String])-> Config{
     // changed the function name from "new" to "build" coz programmer expect new function to never fail, but here we can
-    pub fn build(args: &[String]) -> Result<Config, &'static str> {
-        if args.len()  < 3 {
-            return Err("Not enough arguments");
-        }
+    
+    // args can be any type that implements the Iterator trait and returns String items. line 98 :)
 
-        let word_to_be_searched_2 = args[1].clone();
-        let file_path_2 = args[2].clone();
+    pub fn build(
+        mut args: impl Iterator<Item = String>,
+    ) -> Result<Config, &'static str> {
+        args.next();
+
+        let word_to_be_searched_2 =match args.next(){
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string."),
+        };
+        let file_path = match args.next() {
+            Some(arg)=> arg,
+            None => return Err("Didn't get a file"),
+        };
+        // let file_path_2 = args[2].clone();
         //3rd arg for case , checking the 
         // let argument = args[3].clone();
 
@@ -105,7 +115,7 @@ impl Config {
 
         Ok(Config {
             word: word_to_be_searched_2,
-            file_path: file_path_2,
+            file_path: file_path,
             ignore_case : ignore_case,
             // argument 
         })
